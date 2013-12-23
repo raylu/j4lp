@@ -221,52 +221,57 @@ def main():
 		for k, v in entry.custom.items():
 			row[k] = v.text
 
-		killurl = row['linkyourkillmailyouwantreimbursed']
-		if killurl.startswith('http://j4lp.eve-kill.net/'):
-			resp = requests.get(killurl)
-			match = re.search('zkillboard.com/detail/(\d+)', resp.text)
-			kill_id = match.group(1)
-		else:
-			split = killurl.split('/')
-			kill_id = split[-1] or split[-2]
-		kill = whelp(kill_id)
+		process_row(row)
 
-		ship_name = kill['victim']['ship_name']
-		report = [ship_name]
-		doctrine = doctrines.get(ship_name)
-		if doctrine is not None:
-			fit = defaultdict(int)
-			for slot in ['high', 'medium', 'low', 'rig']:
-				for item in kill['items'].get(slot, {}):
-					if not item.get('charge'):
-						fit[item['item_name']] += 1
-
-			for item_name, count in doctrine.items():
-				fit[item_name] -= count
-
-			total_diff = 0
-			for item_name, count in fit.items():
-				if count != 0:
-					total_diff += abs(count)
-					if count > 0:
-						count = '+%d' % count
-					report.append('%s %s' % (count, item_name))
-			report.append('total diff: %d' % total_diff)
-		else:
-			report.append('(not doctrine)')
-
-		print ('%s, http://www.whelp.gg/kill/%s, %s') % (
-			row['timestamp'],
-			kill_id,
-			row['namethefcforyourop']
-		)
-		for line in report:
-			print ('\t' + line)
+def process_row(row):
+	killurl = row['linkyourkillmailyouwantreimbursed']
+	if killurl.startswith('http://j4lp.eve-kill.net/'):
+		resp = requests.get(killurl)
+		match = re.search('zkillboard.com/detail/(\d+)', resp.text)
+		kill_id = match.group(1)
+	else:
+		split = killurl.split('/')
+		kill_id = split[-1] or split[-2]
+	kill = whelp(kill_id)
+	report = generate_report(kill)
+	print ('%s, http://www.whelp.gg/kill/%s, %s') % (
+		row['timestamp'],
+		kill_id,
+		row['namethefcforyourop']
+	)
+	for line in report:
+		print ('\t' + line)
 
 rs = requests.Session()
 def whelp(kill_id):
 	resp = rs.get('http://api.whelp.gg/kill/' + kill_id)
 	return resp.json()
+
+def generate_report(kill):
+	ship_name = kill['victim']['ship_name']
+	report = [ship_name]
+	doctrine = doctrines.get(ship_name)
+	if doctrine is not None:
+		fit = defaultdict(int)
+		for slot in ['high', 'medium', 'low', 'rig']:
+			for item in kill['items'].get(slot, {}):
+				if not item.get('charge'):
+					fit[item['item_name']] += 1
+
+		for item_name, count in doctrine.items():
+			fit[item_name] -= count
+
+		total_diff = 0
+		for item_name, count in fit.items():
+			if count != 0:
+				total_diff += abs(count)
+				if count > 0:
+					count = '+%d' % count
+				report.append('%s %s' % (count, item_name))
+		report.append('total diff: %d' % total_diff)
+	else:
+		report.append('(not doctrine)')
+	return report
 
 if __name__ == '__main__':
 	main()
