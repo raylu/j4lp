@@ -234,8 +234,9 @@ def process_row(row, out):
 		kill_id = split[-1] or split[-2]
 	kill = whelp(kill_id)
 	report = generate_report(kill)
-	out.write('%s, http://www.whelp.gg/kill/%s, %s\n' % (
+	out.write('%s, %s, http://www.whelp.gg/kill/%s, FC: %s\n' % (
 		row['timestamp'],
+		kill['victim']['character_name'],
 		kill_id,
 		row['namethefcforyourop']
 	))
