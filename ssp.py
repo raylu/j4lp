@@ -205,13 +205,13 @@ doctrines = {
 }
 
 
-def main():
+def ssp(email, password, out):
 	spreadsheet_id = 'tKun0LlHgUgJfYLh7Zu5sjA'
 	worksheet_id = 'od6'
 
 	gd_client = gdata.spreadsheet.service.SpreadsheetsService()
-	gd_client.email = 'CHANGE_THIS@gmail.com'
-	gd_client.password = 'redacted'
+	gd_client.email = email
+	gd_client.password = password
 	gd_client.ProgrammaticLogin()
 
 	list_feed = gd_client.GetListFeed(spreadsheet_id, worksheet_id)
@@ -221,9 +221,9 @@ def main():
 		for k, v in entry.custom.items():
 			row[k] = v.text
 
-		process_row(row)
+		process_row(row, out)
 
-def process_row(row):
+def process_row(row, out):
 	killurl = row['linkyourkillmailyouwantreimbursed']
 	if killurl.startswith('http://j4lp.eve-kill.net/'):
 		resp = requests.get(killurl)
@@ -234,13 +234,13 @@ def process_row(row):
 		kill_id = split[-1] or split[-2]
 	kill = whelp(kill_id)
 	report = generate_report(kill)
-	print ('%s, http://www.whelp.gg/kill/%s, %s') % (
+	out.write('%s, http://www.whelp.gg/kill/%s, %s\n' % (
 		row['timestamp'],
 		kill_id,
 		row['namethefcforyourop']
-	)
+	))
 	for line in report:
-		print ('\t' + line)
+		out.write('\t%s\n' % line)
 
 rs = requests.Session()
 def whelp(kill_id):
@@ -274,4 +274,9 @@ def generate_report(kill):
 	return report
 
 if __name__ == '__main__':
-	main()
+	import getpass
+	import sys
+
+	email = raw_input('email: ')
+	password = getpass.getpass('password: ')
+	ssp(email, password, sys.stdout)

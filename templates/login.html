@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block main %}
+	google login
+	<form method="post">
+		<p>
+			<label>email: <input type="text" name="email"></label>
+		</p>
+		<p>
+			<label>password: <input type="password" name="password"></label>
+		</p>
+		<p>
+			<input type="submit" value="login">
+		</p>
+	</form>
+{% end %}

@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 
-import os
-import sys
-
 import daemon
+import ssp
 import tornado.httpclient
 import tornado.ioloop
 import tornado.web
+
+import os
+import sys
+import cStringIO
 
 class MainHandler(tornado.web.RequestHandler):
 	def get(self):
@@ -14,7 +16,15 @@ class MainHandler(tornado.web.RequestHandler):
 
 class SSPHandler(tornado.web.RequestHandler):
 	def get(self):
-		self.render('ssp.html')
+		self.render('login.html')
+
+	def post(self):
+		email = self.get_argument('email')
+		password = self.get_argument('password')
+		out = cStringIO.StringIO()
+		ssp.ssp(email, password, out)
+		report = out.getvalue()
+		self.render('ssp.html', report=report)
 
 if __name__ == '__main__':
 	tornado.web.Application(
