@@ -122,6 +122,24 @@ doctrines = {
 		'Medium Trimark Armor Pump I': 3,
 	},
 
+	'Armageddon': {
+		"'Arbalest' Cruise Launcher I": 5,
+		'Drone Link Augmentor I': 1,
+		'Heavy Unstable Power Fluctuator I': 1,
+
+		'Prototype 100MN Microwarpdrive I': 1,
+		'Omnidirectional Tracking Link I': 2,
+		'Heavy Electrochemical Capacitor Booster I': 1,
+
+		'Damage Control II': 1,
+		'Energized Adaptive Nano Membrane II': 2,
+		'Reactive Armor Hardener': 1,
+		'1600mm Reinforced Steel Plates II': 2,
+		'Drone Damage Amplifier II': 1,
+
+		'Large Trimark Armor Pump I': 3,
+	},
+
 	'Guardian': {
 		"Large 'Solace' Remote Armor Repairer": 3,
 		"Medium 'Solace' Remote Armor Repairer": 1,
