@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import config
+
 from collections import defaultdict
 import re
 
@@ -271,13 +273,13 @@ doctrines = {
 }
 
 
-def ssp(email, password, out):
+def ssp(out):
 	spreadsheet_id = 'tKun0LlHgUgJfYLh7Zu5sjA'
 	worksheet_id = 'od6'
 
 	gd_client = gdata.spreadsheet.service.SpreadsheetsService()
-	gd_client.email = email
-	gd_client.password = password
+	gd_client.email = config.ssp.email
+	gd_client.password = config.ssp.password
 	gd_client.ProgrammaticLogin()
 
 	list_feed = gd_client.GetListFeed(spreadsheet_id, worksheet_id)
@@ -344,9 +346,6 @@ def generate_report(kill):
 	return report
 
 if __name__ == '__main__':
-	import getpass
 	import sys
 
-	email = raw_input('email: ')
-	password = getpass.getpass('password: ')
-	ssp(email, password, sys.stdout)
+	ssp(sys.stdout)

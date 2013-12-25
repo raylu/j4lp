@@ -1,0 +1,9 @@
+web:
+    port: 8888
+    debug: true
+
+ssp:
+    email: john.smith@gmail.com
+    password: 123
+
+# vim: set et ft=yaml:
