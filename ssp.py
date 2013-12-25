@@ -220,6 +220,54 @@ doctrines = {
 		'Proteus Offensive - Dissonic Encoding Platform': 1,
 		'Proteus Propulsion - Localized Injectors': 1,
 	},
+
+	'Sabre': {
+		'125mm Gatling AutoCannon II': 6,
+		'Prototype Cloaking Device I': 1,
+		'Interdiction Sphere Launcher I': 1,
+
+		'Medium Shield Extender II': 1,
+		'Adaptive Invulnerability Field II': 1,
+		'Medium Shield Extender II': 1,
+		'Limited 1MN Microwarpdrive I': 1,
+
+		'Nanofiber Internal Structure II': 2,
+
+		'Small Core Defense Field Extender I': 2,
+	},
+
+
+	'Heretic': {
+		"'Malkuth' Rocket Launcher I": 6,
+		'Interdiction Sphere Launcher I': 1,
+		'Prototype Cloaking Device I': 1,
+
+		'Medium Shield Extender II': 2,
+		'Limited 1MN Microwarpdrive I': 1,
+
+		'Nanofiber Internal Structure II': 2,
+		'Micro Auxiliary Power Core I': 1,
+
+		'Small Anti-EM Screen Reinforcer II': 1,
+		'Small Core Defense Field Extender I': 1,
+	},
+
+	'Flycatcher': {
+		"'Malkuth' Rocket Launcher I": 6,
+		'Prototype Cloaking Device I': 1,
+		'Interdiction Sphere Launcher I': 1,
+
+		'Medium Shield Extender II': 1,
+		'Adaptive Invulnerability Field II': 1,
+		'Medium Shield Extender II': 1,
+		'Limited 1MN Microwarpdrive I': 1,
+		'Upgraded EM Ward Amplifier I': 1,
+
+		'Micro Auxiliary Power Core I': 1,
+
+		'Small Processor Overclocking Unit I': 1,
+		'Small Core Defense Field Extender I': 1,
+	},
 }
 
 
