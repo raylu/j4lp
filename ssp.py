@@ -239,7 +239,10 @@ def ssp(email, password, out):
 		for k, v in entry.custom.items():
 			row[k] = v.text
 
-		process_row(row, out)
+		try:
+			process_row(row, out)
+		except:
+			out.write('error processing %s\n' % row['linkyourkillmailyouwantreimbursed'])
 
 def process_row(row, out):
 	killurl = row['linkyourkillmailyouwantreimbursed']
