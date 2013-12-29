@@ -3,6 +3,10 @@
 {% block main %}
 	<pre>
 {% import re %}
-{% raw re.sub("http://www.whelp.gg/kill/\d+", "<a href=\"\g<0>\">\g<0></a>", report) %}
+{% set output = re.sub("http://www.whelp.gg/kill/\d+", "<a href=\"\g<0>\">\g<0></a>", report) %}
+{% set output = re.sub("total diff: 0", '<span class="no_diff">\g<0></span>', output) %}
+{% set output = re.sub("total diff: [1-9]\d*", '<span class="diff">\g<0></span>', output) %}
+{% set output = re.sub(r"\(not doctrine\)", '<span class="not_doctrine">\g<0></span>', output) %}
+{% raw output %}
 	</pre>
 {% end %}

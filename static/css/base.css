@@ -56,3 +56,13 @@ td {
 pre {
 	font-size: 11pt;
 }
+
+span.no_diff {
+	color: #4c4;
+}
+span.diff {
+	color: #cc4;
+}
+span.not_doctrine {
+	color: #c44;
+}
