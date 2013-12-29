@@ -272,7 +272,6 @@ doctrines = {
 	},
 }
 
-
 def ssp(out):
 	spreadsheet_id = 'tKun0LlHgUgJfYLh7Zu5sjA'
 	worksheet_id = 'od6'
@@ -295,6 +294,8 @@ def ssp(out):
 			process_row(row, out)
 		except:
 			out.write('error processing %s\n' % row['linkyourkillmailyouwantreimbursed'])
+		if i != len(list_feed.entry) - 1:
+			out.write('\n')
 
 def process_row(row, out):
 	killurl = row['linkyourkillmailyouwantreimbursed']

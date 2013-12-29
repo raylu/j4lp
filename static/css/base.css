@@ -47,12 +47,12 @@ td {
 }
 
 #wrapper {
-	width: 800px;
+	width: 900px;
 	margin: 50px auto;
 	background: #111;
 	padding: 25px;
 }
 
 pre {
-	font-family: inherit;
+	font-size: 11pt;
 }
