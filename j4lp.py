@@ -9,7 +9,6 @@ import tornado.web
 
 import os
 import sys
-import cStringIO
 
 class MainHandler(tornado.web.RequestHandler):
 	def get(self):
@@ -17,10 +16,7 @@ class MainHandler(tornado.web.RequestHandler):
 
 class SSPHandler(tornado.web.RequestHandler):
 	def get(self):
-		out = cStringIO.StringIO()
-		ssp.ssp(out)
-		report = out.getvalue()
-		self.render('ssp.html', report=report)
+		self.render('ssp.html', report=ssp.ssp())
 
 if __name__ == '__main__':
 	tornado.web.Application(

@@ -47,22 +47,25 @@ td {
 }
 
 #wrapper {
-	width: 900px;
+	width: 700px;
 	margin: 50px auto;
 	background: #111;
 	padding: 25px;
 }
 
-pre {
+.report {
+	margin: 25px 0
+}
+.diff {
+	font-family: monospace;
 	font-size: 11pt;
 }
-
-span.no_diff {
+span.green {
 	color: #4c4;
 }
-span.diff {
+span.yellow {
 	color: #cc4;
 }
-span.not_doctrine {
+span.red {
 	color: #c44;
 }

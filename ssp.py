@@ -272,7 +272,7 @@ doctrines = {
 	},
 }
 
-def ssp(out):
+def ssp():
 	spreadsheet_id = 'tKun0LlHgUgJfYLh7Zu5sjA'
 	worksheet_id = 'od6'
 
@@ -293,13 +293,11 @@ def ssp(out):
 			row[k] = v.text
 
 		try:
-			process_row(row, out)
+			yield process_row(row)
 		except:
-			out.write('error processing %s\n' % row['linkyourkillmailyouwantreimbursed'])
-		if i != len(list_feed.entry) - 1:
-			out.write('\n')
+			yield 'error processing %s' % row['linkyourkillmailyouwantreimbursed']
 
-def process_row(row, out):
+def process_row(row):
 	killurl = row['linkyourkillmailyouwantreimbursed']
 	if killurl.startswith('http://j4lp.eve-kill.net/'):
 		resp = requests.get(killurl)
@@ -309,15 +307,16 @@ def process_row(row, out):
 		split = killurl.split('/')
 		kill_id = split[-1] or split[-2]
 	kill = whelp(kill_id)
-	report = generate_report(kill)
-	out.write('%s, %s, http://www.whelp.gg/kill/%s, FC: %s\n' % (
-		row['timestamp'],
-		kill['victim']['character_name'],
-		kill_id,
-		row['namethefcforyourop']
-	))
-	for line in report:
-		out.write('\t%s\n' % line)
+	ship_name, total_diff, diff = generate_report(kill)
+	return {
+		'timestamp': row['timestamp'],
+		'character_name': kill['victim']['character_name'],
+		'kill_id': kill_id,
+		'fc': row['namethefcforyourop'],
+		'ship_name': ship_name,
+		'total_diff': total_diff,
+		'diff': diff,
+	}
 
 rs = requests.Session()
 def whelp(kill_id):
@@ -326,7 +325,7 @@ def whelp(kill_id):
 
 def generate_report(kill):
 	ship_name = kill['victim']['ship_name']
-	report = [ship_name]
+	diff = []
 	doctrine = doctrines.get(ship_name)
 	if doctrine is not None:
 		fit = defaultdict(int)
@@ -344,13 +343,24 @@ def generate_report(kill):
 				total_diff += abs(count)
 				if count > 0:
 					count = '+%d' % count
-				report.append('%s %s' % (count, item_name))
-		report.append('total diff: %d' % total_diff)
+				diff.append((count, item_name))
 	else:
-		report.append('(not doctrine)')
-	return report
+		total_diff = None
+	return ship_name, total_diff, diff
 
 if __name__ == '__main__':
-	import sys
-
-	ssp(sys.stdout)
+	for r in ssp():
+		if isinstance(r, dict):
+			print '%s\t%s\tFC:%s\n    %s\thttp://www.whelp.gg/kill/%s' % (
+				r['timestamp'], r['character_name'], r['fc'],
+				r['ship_name'], r['kill_id']
+			)
+			for d in r['diff']:
+				print '        %s %s' % d
+			if r['total_diff'] is not None:
+				print '    total diff: %d' % r['total_diff']
+			else:
+				print '    (not doctrine)'
+		else:
+			print r
+		print

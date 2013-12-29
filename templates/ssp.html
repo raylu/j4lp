@@ -1,12 +1,33 @@
 {% extends "base.html" %}
 
 {% block main %}
-	<pre>
-{% import re %}
-{% set output = re.sub("http://www.whelp.gg/kill/\d+", "<a href=\"\g<0>\">\g<0></a>", report) %}
-{% set output = re.sub("total diff: 0", '<span class="no_diff">\g<0></span>', output) %}
-{% set output = re.sub("total diff: [1-9]\d*", '<span class="diff">\g<0></span>', output) %}
-{% set output = re.sub(r"\(not doctrine\)", '<span class="not_doctrine">\g<0></span>', output) %}
-{% raw output %}
-	</pre>
+	{% for r in report %}
+		<div class="report">
+			{% if isinstance(r, dict) %}
+				{{ r['timestamp'] }}, {{ r['character_name'] }}, FC: {{ r['fc'] }}
+				<br>
+				{% if r['total_diff'] is None %}
+					{% set color = "red" %}
+				{% elif r['total_diff'] == 0 %}
+					{% set color = "green" %}
+				{% else %}
+					{% set color = "yellow" %}
+				{% end %}
+				<span class="{{ color }}">{{ r['ship_name'] }}</span>
+				<a href="http://www.whelp.gg/kill/{{ r['kill_id'] }}">http://www.whelp.gg/kill/{{ r['kill_id'] }}</a>
+				{% for d in r['diff'] %}
+					<div class="diff">{{ d[0] }} {{ d[1] }}</div>
+				{% end %}
+				<div>
+					{% if r['total_diff'] is not None %}
+						total diff: {{ r['total_diff'] }}
+					{% else %}
+						(not doctrine)
+					{% end %}
+				</div>
+			{% else %}
+				{{ r }}
+			{% end %}
+		</div>
+	{% end %}
 {% end %}
