@@ -287,6 +287,8 @@ def ssp(out):
 		# un-atom the feed
 		row = {}
 		for k, v in entry.custom.items():
+			if k == '_d415a':
+				k = 'timestamp'
 			row[k] = v.text
 
 		try:
