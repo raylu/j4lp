@@ -283,6 +283,8 @@ def ssp(out):
 
 	list_feed = gd_client.GetListFeed(spreadsheet_id, worksheet_id)
 	for i, entry in enumerate(list_feed.entry):
+		if entry.custom['paidoutby'].text:
+			continue
 		# un-atom the feed
 		row = {}
 		for k, v in entry.custom.items():
